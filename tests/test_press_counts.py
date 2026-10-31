@@ -3,10 +3,9 @@
 The article total is written in every place that states it: the PRESS.md intro, its per-country index
 line, the alt text of the card in README.md, the alt text of the same card in README.nl.md (in Dutch),
 README.de.md (in German), README.uk.md (in Ukrainian) and README.tr.md (in Turkish), and
-tools/readme_featured.py (which draws the line onto
-docs/featured.png). Adding one article by hand means editing all of them; this checks they agree, so a
-PR that adds a row and forgets the counts fails here instead of shipping a card that says 73 over a
-list of 74.
+tools/readme_featured.py (which draws the line onto docs/featured.png). Adding one article by hand
+means editing all of them; this checks they agree, so a PR that adds a row and forgets the counts
+fails here instead of shipping a card that says 73 over a list of 74.
 
 The Videos section at the end of the same page is read the same way, and had nothing reading it: the
 intro ends "[229 videos](#videos) follow the articles", the section's own line says when the view
@@ -58,9 +57,9 @@ MONTHS = {name: number for number, name in enumerate(
     ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), 1)}
 # A video row links its YouTube or Bilibili watch page.
 VIDEO_LINK = re.compile(r"\((https?://[^)\s]*(?:youtube\.com|bilibili\.com)/[^)\s]+)\)")
-# The card image the numbers are drawn on, wherever a README shows it: README.md in English, README.nl.md
-# in Dutch and README.de.md in German, and any translation that copies the picture later. The words
-# around the numbers are translated; the numbers are not.
+# The card image the numbers are drawn on, wherever a README shows it: STORY_PAGES below, and any
+# translation that copies the picture later. The words around the numbers are translated; the numbers
+# are not.
 CARD_ALT = re.compile(r'src="docs/card(?:-halloween)?\.jpg"[^>]*?alt="([^"]*)"')
 # The front pages that show the card and repeat its numbers in the story section today.
 STORY_PAGES = ("README.md", "README.de.md", "README.nl.md", "README.uk.md", "README.tr.md")
@@ -355,8 +354,8 @@ class PressCountsTest(unittest.TestCase):
         # the Dutch front page claiming an older count. The German page is the case the recipe still
         # missed: it carries the same picture, so the next article had to be added there by hand too.
         alts = card_alt_texts()
-        self.assertLessEqual({"README.md", "README.nl.md", "README.de.md"}, set(alts),
-                             "README.md, README.nl.md and README.de.md no longer show docs/card.jpg with an alt text")
+        self.assertLessEqual(set(STORY_PAGES), set(alts),
+                             f"{', '.join(STORY_PAGES)} no longer all show docs/card-halloween.jpg with an alt text")
         numbers = (("article total", self.numbers["total"]),
                    ("country count", self.numbers["countries"]),
                    ("'+N more'", self.numbers["total"] - len(logos())))

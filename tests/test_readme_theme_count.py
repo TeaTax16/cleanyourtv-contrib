@@ -57,8 +57,9 @@ ROW_START = "| **Themes** |"
 # Every feature row that names themes/ and states how many ship there, whatever language it is in:
 # English "eleven ship in", German "Zehn liegen in", Dutch "staan tien thema's", Ukrainian
 # "постачається чотирнадцять". The words come from the four languages whose front pages write the
-# count as a word today (README.tr.md writes digits), two to twenty each; one is left out because "een" and "ein" are also the articles those
-# languages put before a noun, so an English "one" would read a Dutch sentence as a claim of one theme.
+# count as a word today (README.tr.md writes digits), two to twenty each; one is left out because
+# "een" and "ein" are also the articles those languages put before a noun, so an English "one" would
+# read a Dutch sentence as a claim of one theme.
 NUMBER_WORDS = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8,
                 "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
                 "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
