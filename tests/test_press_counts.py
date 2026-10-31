@@ -347,15 +347,15 @@ class PressCountsTest(unittest.TestCase):
         self.assertEqual(more, self.numbers["total"] - len(logos()), "README alt text and the logos in tools/readme_featured.py disagree on the '+N more'")
 
     def test_every_readme_card_states_the_same_numbers(self):
-        # The card is in README.md, README.nl.md and README.de.md, and all three alt texts state the
-        # total, the country count and the "+N more" - in English, Dutch and German. Only the English
-        # one was checked, so the press commit that took the list to 296 articles had to change the
+        # The card is on every page in STORY_PAGES, and each alt text states the total, the country count
+        # and the "+N more" in its own language. It began on README.md, README.nl.md and README.de.md, and
+        # only the English one was checked, so the press commit that took the list to 296 articles had to change the
         # Dutch alt text by hand as well (6cc2fdc9), and a PR written from docs/workflows/press.md left
         # the Dutch front page claiming an older count. The German page is the case the recipe still
         # missed: it carries the same picture, so the next article had to be added there by hand too.
         alts = card_alt_texts()
         self.assertLessEqual(set(STORY_PAGES), set(alts),
-                             f"{', '.join(STORY_PAGES)} no longer all show docs/card-halloween.jpg with an alt text")
+                             f"{', '.join(STORY_PAGES)} no longer all show the docs/card image with an alt text")
         numbers = (("article total", self.numbers["total"]),
                    ("country count", self.numbers["countries"]),
                    ("'+N more'", self.numbers["total"] - len(logos())))
@@ -439,7 +439,7 @@ class FrontPageCoverageTest(unittest.TestCase):
         # a count in the picture and a stale one in prose; the pages come from the card, like the alt-text test, so
         # a translation that copies the picture is read without this list being edited first.
         self.assertLessEqual(set(STORY_PAGES), set(self.pages),
-                             f"{', '.join(STORY_PAGES)} no longer all show docs/card-halloween.jpg with an alt text")
+                             f"{', '.join(STORY_PAGES)} no longer all show the docs/card image with an alt text")
         for name in sorted(self.pages):
             read = coverage_numbers((ROOT / name).read_text(encoding="utf-8"))
             with self.subTest(readme=name):
@@ -474,7 +474,7 @@ class FrontPageTotalsTest(unittest.TestCase):
         # neither (docs/workflows/tv-list.md step 5 leaves the tables to a maintainer), so this only bites
         # the run that regenerates the card.
         self.assertLessEqual(set(STORY_PAGES), set(self.pages),
-                             f"{', '.join(STORY_PAGES)} no longer all show docs/card-halloween.jpg with an alt text")
+                             f"{', '.join(STORY_PAGES)} no longer all show the docs/card image with an alt text")
         for name in sorted(self.pages):
             card = card_totals(self.pages[name])
             read = catalogue_numbers((ROOT / name).read_text(encoding="utf-8"))
@@ -511,7 +511,7 @@ class TotalsReaderTest(unittest.TestCase):
                 "The coverage: 351 articles from 46 countries and 229 videos on YouTube and Bilibili, all in\n"
                 "[docs/PRESS.md](docs/PRESS.md) (numbers as of 30 October 2026).\n")
 
-    def test_the_five_languages_are_read_the_same_way(self):
+    def test_each_language_is_read_the_same_way(self):
         for sentence in ("The lists now cover 387 TV models from 103 brands.",
                          "Die Listen umfassen jetzt 387 TV-Modelle von 103 Marken.",
                          "De lijsten tellen nu 387 tv-modellen van 103 merken.",
@@ -561,7 +561,7 @@ class CoverageReaderTest(unittest.TestCase):
                 f"The coverage: {clause}, all in [docs/PRESS.md](docs/PRESS.md){extra}\n"
                 "(numbers as of 30 October 2026).\n")
 
-    def test_the_five_languages_are_read_the_same_way(self):
+    def test_each_language_is_read_the_same_way(self):
         # Turkish puts the country before the article count ("46 ülkeden 351 makale"), so README.tr.md writes
         # the articles first, the order this reader takes the numbers in.
         for clause in ("351 articles from 46 countries and 229 videos on YouTube and Bilibili",

@@ -28,7 +28,7 @@ README.md has no table of its own: its brand grid (the TOP brands with the most 
 search, and the rest in a <details>) sits between <!-- tv-brands:start ... --> and <!-- tv-brands:end -->.
 README.nl.md, README.de.md, README.uk.md and README.tr.md carry the same brand block and the same counts in
 their own words ("N tv-modellen · B merken · L talen · ", "N TV-Modelle · B Marken · L Sprachen · ",
-...), and a README that still has tv-table markers gets the short table there too. Everything outside the markers is hand-written.
+and the Ukrainian and Turkish words in TRANSLATIONS below), and a README that still has tv-table markers gets the short table there too. Everything outside the markers is hand-written.
 The counts are the card's alt text ("N TV models · B brands · L languages · "), the "| **L languages** |"
 feature row and STATS in tools/readme_stats.py. Exit codes: 0 up to date (or written), 1 out of date
 (--check), or a count moved and --font could not draw one of the pictures (the tables are written; the
