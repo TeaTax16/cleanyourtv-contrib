@@ -1553,6 +1553,57 @@ count on reaching Settings by hand. `examples/xiaomi-mitv-aesp0` is the one list
 package (its second set, in daily use since 21 Oct 2026); carrying that line to a set whose settings app
 is Xiaomi's takes Settings with it.
 
+## Xiaomi HyperOS 3: the power key does nothing, and music stops when the screen goes off
+
+Two faults with one cause on a Xiaomi set running HyperOS 3: a short press of the remote's power button
+is not the framework's, and a screen that goes off force-stops every app the owner installed two seconds
+later. Both were read out of `services.jar` (baksmali) and logcat on a MiTV-MFFU0 (Xiaomi TV S Pro 100,
+`finch`, Android 14 / HyperOS 3, `OS3.0.115.0.UFFMATV`, MediaTek mt5877), and reported with the logcat
+lines in [issue #2869](https://github.com/Gathin23/cleanyourtv/issues/2869).
+
+The power key emits a plain `KEYCODE_POWER` and the framework's short-press policy is
+`SHORT_PRESS_POWER_GO_XIAOAI_MODE`: `KEYCODE_SLEEP` has no effect on it and `mWakefulness` stays awake.
+What turns the screen off is the stock launcher (PatchWall, `com.mitv.tvhome`) together with the two
+screensaver packages, `com.xiaomi.mitv.aod.screensaver` and `com.xiaomi.mitv.hyper.screensaver`, which
+render the off screen. Disable PatchWall - which the launcher install in
+[`examples/xiaomi-mitv-mffu0`](../examples/xiaomi-mitv-mffu0/debloat.txt) needs - and the power button no
+longer turns the TV off; disable either screensaver package and nothing renders the off screen. The same
+build also needs `aod_current_pattern_id` at 107 (music CD) or 108 (music tape): at 110 (lyrics) the
+receiver logs its way to "nothing to do" and the panel never turns off. `mitv.short.power.action`
+(`Settings.System`) chooses 0 screen off (the default, instant wake), 1 standby (deep, and it cuts
+audio) or 2 shutdown, so raising it to 1 to "fix" a screen that will not go off turns screen-off into a
+set that looks powered off.
+
+Screen off also takes the owner's apps with it, unless Xiaomi's cloud rule file says otherwise:
+
+```sh
+tools/tv.py 'logcat -d | grep killAllThirdApp'
+# MitvActivityManagerService: PowerManagerService killAllThirdApp forcestop packageName:com.lxmusic.tv
+```
+
+`MitvPowerManagerService.gotoSleepStayAliveProcess` runs from the screen-off broadcast and asks
+`MitvConfigParser` for bit `0x8000` in `/data/system/mitv_security_center.xml`: a foreground app that
+file names is kept, anything else gets the launcher brought to the front and a thread that sleeps two
+seconds and calls `killAllThirdApp`. The file is pushed by cloud control and cannot be written from the
+shell, and the apps it names are the stock ones (QQ Music TV among them), so a third-party player loses
+its audio about two seconds after the screen goes off.
+
+The firmware carries an off switch for that path: with `Settings.Global disable_back_home_whitelist` set
+to `disable`, the sleep routine returns before any of it runs.
+
+```sh
+tools/tv.py 'settings put global disable_back_home_whitelist disable'
+tools/tv.py 'logcat -d | grep gotoSleepStayAliveProcess'   # expect: ... feature disable
+```
+
+It is a stock settings key, so it survives a reboot, and `settings delete global
+disable_back_home_whitelist` puts the behaviour back. The system then stops forcing the launcher to the
+front on screen-off too, which a third-party home screen wants anyway and a set still on its stock home
+screen would notice.
+
+Both faults are this one build: another Xiaomi firmware may handle screen-off somewhere else and answer
+neither, and no second unit has been reported.
+
 ## Settings freezes, then closes, in Accessibility
 
 The highlight passes over Accessibility > Text-to-speech output and Settings stops responding; a few seconds
