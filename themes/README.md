@@ -184,6 +184,7 @@ A new key needs one there in the same pull request.
 | `single_row` | bool | Every app in the dock's row, the dock apps first, scrolling sideways; no grid below (`false` by default; needs `dock_row`) |
 | `dock_band_all` | bool | With `single_row`, the band runs behind every app in the row, not only the dock apps (`false` by default) |
 | `ambient_glow` | bool | The glow behind the dock in the focused app's colour (`true` by default); `false` keeps only `background_color` or the wallpaper, e.g. for a calm photo background |
+| `glow_snap` | bool | The ambient glow takes the next app's colour in one frame instead of dimming and fading back in. Each frame of the fade repaints the whole screen, so on a slow GPU (a Mali-G52 on a Xiaomi MiTV-MOEU0) it cut the late frames on Home from 60% to 27%. `false` by default |
 | `app_glow` | bool | The focus highlight glows in the focused app's colour on every tile, as `cinematic_home` does for the dock (`false` by default) |
 | `fade_rows` | bool | The rows fade out as they scroll up under the clock instead of being cut off at a hard line; the wallpaper or sky shows through. The grid then draws into a hardware layer (about 6 MB of graphics memory at 1080p) (`false` by default) |
 

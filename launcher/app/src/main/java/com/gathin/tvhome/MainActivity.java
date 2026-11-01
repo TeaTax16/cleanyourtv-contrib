@@ -173,6 +173,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private int glassAccent;
     private int ambientColor = -1;
     private ValueAnimator ambientAnimator;
+    /** config.xml glow_snap: the glow takes a new colour in one frame instead of the dip-and-fade. */
+    private boolean glowSnap;
     private boolean heroShown;
     private boolean animations;
     private boolean advancedEffects;
@@ -492,6 +494,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // a fade renders it into a full-screen offscreen buffer first.
         ambient.forceHasOverlappingRendering(false);
         ambientGlow = cfg.ambientGlow;
+        glowSnap = cfg.glowSnap;
         appGlow = cfg.appGlow;
         if (!ambientGlow) ambient.setVisibility(View.GONE);
         heroName = findViewById(R.id.heroName);
@@ -1882,6 +1885,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }).start();
             if (ambientGlow && advancedEffects) {
                 transitionAmbient(color);
+            } else if (ambientGlow && color != ambientColor && glowSnap) {
+                ambient.animate().cancel();
+                setAmbient(color);
+                ambient.setAlpha(1f);
             } else if (ambientGlow && color != ambientColor) {
                 ambient.animate().alpha(0.35f).setDuration(200).withEndAction(() -> {
                     setAmbient(color);
@@ -2128,6 +2135,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         if (color == ambientColor && ambient.getBackground() != null) {
             ambient.animate().alpha(1f).setDuration(300).start();
+            return;
+        }
+        if (glowSnap) {
+            setAmbient(color);
+            ambient.setAlpha(1f);
             return;
         }
         // The same dip-and-swap as the dock's top shelf.
