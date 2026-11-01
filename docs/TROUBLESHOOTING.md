@@ -177,6 +177,19 @@ Things that bit us or contributors, so they don't bite you. Commands use `tools/
   something stalls there. Use `tools/tv.py --reboot`: it sends the reboot through ADB's own service
   and returns once the request is accepted. The TV is still restarting at that point, so let it
   answer again (`tools/tv.py --probe`) before the next command.
+- **`logcat` fills with `Failed to find provider info for
+  com.google.android.tungsten.setupwraith` about twice a second once the wizard is disabled.** On a Sony
+  XR-77A80L (`BRAVIA_VH22`, Google TV 12, `STT2.230505.001.S136 682241`) `com.sony.dtv.sonysystemservice`
+  asks for that provider every 500 ms for as long as `com.google.android.tungsten.setupwraith` is disabled:
+  it starts about three minutes after boot and piled up 3,617 lines in the first half hour, some 7,000 an
+  hour, all from that one process (`pidof com.sony.dtv.sonysystemservice` was its only caller). The wizard
+  being off is the whole cause, and nothing is broken: `pm enable com.google.android.tungsten.setupwraith`
+  stopped it within the second and disabling it again started it again, nothing on screen changes, and idle
+  CPU for the whole TV still fell from 22.6% to 9% after the debloat and the launcher swap. Turning the
+  wizard back on is not the quiet way out either, since its `.RecoveryActivity` takes Home from the
+  launcher: leave it off and let the line repeat. Seen on that one set
+  ([#2853](https://github.com/Gathin23/cleanyourtv/issues/2853)); whether VH2 and VH21 units do the same has
+  not been reported yet.
 - **Every `dumpsys` answers `Service dumps disabled due to hung system process.`**, and `tools/disable.sh`
   skips every package in the list and says to reboot first (older copies of the script said "the TV's dumpsys
   shows neither a requested nor a granted permission block" and named Android 5.x instead). Android's watchdog
