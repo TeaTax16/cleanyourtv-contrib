@@ -73,9 +73,9 @@ com.android.ondevicepersonalization.services
 com.android.federatedcompute.services
 
 # UK Freeview DTT services, on a unit whose ro.vendor.mtk.system.marketregion is "us"
-uk.co.freeview.fvpconfigauth
-uk.co.freeview.mdsclient
-uk.co.freeview.tifbridge
+# uk.co.freeview.fvpconfigauth  # TV middleware, kept on in the shared list; this set has it off
+# uk.co.freeview.mdsclient  # TV middleware, kept on in the shared list; this set has it off
+# uk.co.freeview.tifbridge  # TV middleware, kept on in the shared list; this set has it off
 
 # Health Connect: a phone health-data platform with nothing to do on a projector
 com.android.healthconnect.controller

@@ -61,7 +61,7 @@ android.autoinstalls.config.google.gtvpai     # partner auto-installs
 com.tcl.channelplus                     # TCL Live FAST channels (a Live TV input)
 com.tcl.tv.tclchannel                   # TCL Channel; the remote's TCL Channel button goes dead with it
 com.tcl.tv.plus                         # TCL TV+ free channels
-com.netflix.ninja                       # Netflix; the remote's Netflix button goes dead with it
+# com.netflix.ninja                       # Netflix; the remote's Netflix button goes dead with it; an owner's app, kept on in the shared list; this set has it off
 com.google.android.videos               # Play Movies
 com.google.android.play.games
 com.google.android.marvin.talkback      # TalkBack

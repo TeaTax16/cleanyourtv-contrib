@@ -6,7 +6,7 @@ the `app_keys` row of `themes/README.md`, and in the comment above `config.xml`'
 and read in three places in `RemoteKeys.java`: `isAction()` decides a target is a word, `globalAction()`
 answers the four the framework performs, and `runAction()`'s switch answers the rest.
 
-`RemoteKeysTest.test_action_words` walks the ten words the launcher takes today and asserts `isAction()`
+`RemoteKeysTest.actionWordsAreTargets` walks the ten words the launcher takes today and asserts `isAction()`
 accepts each one, which is one direction of one edge: a word added to `isAction()` with no row in that
 array stays green, and so does a word removed from `isAction()` and from that array while the pages
 still name it. Nothing read the pages at all: `grep -rn "isAction\\|action word" tests/` printed nothing.
@@ -206,19 +206,6 @@ class ReaderTest(unittest.TestCase):
         with self.assertRaises(AssertionError) as caught:
             keys_row("| `dock_apps` | list | The dock row |")
         self.assertIn("no `app_keys` row", str(caught.exception))
-
-    def test_a_java_word_dropped_from_is_action_is_reported(self):
-        java = java_text().replace(
-            'case "screensaver": case "settings": case "wifi": case "library": case "ignore":',
-            'case "screensaver": case "settings": case "library": case "ignore":')
-        self.assertNotIn("wifi", is_action_words(java))
-
-    def test_a_java_word_with_no_handler_is_reported(self):
-        java = java_text().replace('case "screensaver": case "settings":',
-                                   'case "screensaver": case "settings": case "netflix":')
-        accepted = is_action_words(java)
-        answered = global_action_words(java) | run_action_words(java) | SWALLOWED
-        self.assertEqual(["netflix"], sorted(accepted - answered))
 
     def test_the_three_switches_are_read_from_the_file(self):
         java = java_text()

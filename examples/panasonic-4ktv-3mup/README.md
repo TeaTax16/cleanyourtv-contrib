@@ -14,7 +14,7 @@ the other 20 stayed disabled.
 tools/disable.sh examples/panasonic-4ktv-3mup/debloat.txt
 ```
 
-34 packages, all disabled, none uninstalled: the first unit's 20 and 14 more from a second unit (below). The header of [`debloat.txt`](debloat.txt) says what each group is,
+20 packages, all disabled, none uninstalled; 14 more from a second unit (below) are in the list commented out until the HDMI inputs are checked. The header of [`debloat.txt`](debloat.txt) says what each group is,
 what the firmware turns back on and what was kept on purpose.
 
 Do not disable `com.google.android.apps.tv.launcherx` or `com.google.android.tungsten.setupwraith`

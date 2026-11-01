@@ -14,7 +14,7 @@ Hardware and debloat notes for the 58" Síragon 4K sold in Venezuela, manufactur
 
 ## Debloat
 
-The [debloat list](debloat.txt) disables 17 packages: Google's sponsored rows, feedback and partner
+The [debloat list](debloat.txt) disables 16 packages: Google's sponsored rows, feedback and partner
 preloads, the Play Movies/Music/Games entries, the Prime Video preload, the vendor demo, Freeview Play,
 the setup wizard and the stock launcher. The KTC factory-menu and serial-console packages stay enabled,
 because other Siragon boards route hardware hotkeys through them.

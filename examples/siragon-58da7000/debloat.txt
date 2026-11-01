@@ -40,7 +40,7 @@ com.mediatek.tv.freeviewplay                     # Freeview Play, UK-only
 
 # Setup and remote extras
 android.autoinstalls.config.ktc.pai              # KTC preload installer
-com.google.android.tv.remote.service             # phone remote service; re-enable to use the Google TV app
+# com.google.android.tv.remote.service             # phone remote service; re-enable to use the Google TV app; kept on in the shared list; this set has it off
 com.google.android.tungsten.setupwraith          # can own the saved Wi-Fi, and casting stops without it on
                                                  # Google TV; install the new launcher before disabling it
 

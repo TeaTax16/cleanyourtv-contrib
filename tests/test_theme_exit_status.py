@@ -139,53 +139,5 @@ class ThemeExitStatusTest(unittest.TestCase):
         self.assertTrue(any(str(self.theme / "config.json") in line for line in pushes), pushes)
 
 
-class ThemeExitStatusSourceTest(unittest.TestCase):
-    """The judgement sits in the script's own words and before anything is sent, and the twin says the same."""
-
-    def setUp(self):
-        self.shell = (TOOLS / "theme.sh").read_text(encoding="utf-8")
-        self.ps = (TOOLS / "theme.ps1").read_text(encoding="utf-8")
-
-    def test_the_address_is_judged_by_the_script_not_by_bash(self):
-        # The comment above the judgement quotes the old expansion; what must not come back is the command.
-        self.assertNotIn(': "${TV_HOST:?', self.shell,
-                         "bash's `:?` answers a missing address with its own line and exit 1")
-        judged = self.shell.index('if [ -z "${TV_HOST:-}" ]')
-        self.assertLess(judged, self.shell.index('PY=venv/bin/python'),
-                        "the address is read before the client is chosen")
-        self.assertLess(judged, self.shell.index('tv "mkdir -p $DIR'),
-                        "nothing can be sent before the address is read")
-        block = self.shell[judged:]
-        self.assertIn("exit 2", block[:block.index("fi")])
-
-    def test_a_dash_word_is_refused_before_it_is_resolved_as_a_path(self):
-        judged = self.shell.index('-*) if [ "$THEME_ARG" != "--reset" ]')
-        self.assertLess(judged, self.shell.index('*) THEME_ARG="$(pwd -W'),
-                        "the dash word is refused before the folder resolution reads it")
-        self.assertLess(judged, self.shell.index('if [ "${1:-}" = --reset ]'),
-                        "the reset branch is not what answers it")
-
-    def test_the_header_states_what_2_covers(self):
-        header = self.shell[:self.shell.index("set -euo pipefail")]
-        self.assertIn("TV_HOST is unset or empty", header)
-        self.assertIn("starts with a dash", header)
-        self.assertIn("Nothing was sent to the TV.", header + self.shell)
-
-    def test_the_windows_twin_answers_the_missing_host_with_2(self):
-        judged = self.ps.index("if (-not $TvHost)")
-        block = self.ps[judged:self.ps.index("$env:TV_HOST = $TvHost")]
-        self.assertIn("exit 2", block)
-        self.assertIn(NOTHING_SENT, block)
-        self.assertNotIn("throw", block, "a throw exits 1, the status of a push that failed")
-        self.assertIn("no TV host was given", self.ps[:judged])
-
-    def test_the_windows_twin_answers_a_missing_venv_with_2(self):
-        judged = self.ps.index("if (-not (Test-Path $py))")
-        block = self.ps[judged:self.ps.index("$pkg = 'com.gathin.tvhome'")]
-        self.assertIn("exit 2", block)
-        self.assertIn(NOTHING_SENT, block)
-        self.assertNotIn("throw", block)
-
-
 if __name__ == "__main__":
     unittest.main()

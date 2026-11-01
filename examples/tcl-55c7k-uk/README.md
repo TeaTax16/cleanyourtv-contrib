@@ -221,7 +221,7 @@ Notes from this unit:
 ## Compatibility report: TCL 55Q6C, Netherlands, Wi-Fi
 
 TCL 55Q6C QD-Mini LED (2025), product `G08_4K_GB`, Google TV 14, `UTT2.250416.001 AU02`, on Wi-Fi. Set up on
-27 October 2026 from the [G08 US list](../tcl-g08-us-google-tv/debloat.txt): 31 packages in four batches, all
+27 October 2026 from the [G08 US list](../tcl-g08-us-google-tv/debloat.txt), 31 entries in four batches, all
 still disabled after a reboot, then setupwraith and the launcher. Kept: `ttvs`, `interactive`, Chromecast,
 AirPlay, the game bar and the main streaming apps. Off by choice: Assistant, `com.tcl.eva`, Miracast, Alexa,
 MagiConnect, Disney+.

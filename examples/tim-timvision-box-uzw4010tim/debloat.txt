@@ -35,13 +35,13 @@ com.technicolor.android.BootupTraceQR
 com.technicolor.cputemperature
 com.google.android.feedback
 
-# TIMVISION service parts (off by choice: no TIMVISION subscription; keep them if you use TIMVISION)
-tv.broadpeak.nanocdnwrapper                  # Broadpeak multicast CDN for TIMVISION live
-it.telecomitalia.iptuner                     # TIMVISION live channels
-it.telecomitalia.linemanager
-it.telecomitalia.accountmanager              # TIM account, Firebase messaging
-it.telecomitalia.timppapp
-timvision.tvappsettings
+# TIMVISION service parts: this set has them off (no subscription); uncomment them only if you don't use TIMVISION
+# tv.broadpeak.nanocdnwrapper                  # Broadpeak multicast CDN for TIMVISION live; kept on for TIMVISION subscribers
+# it.telecomitalia.iptuner                     # TIMVISION live channels; kept on for TIMVISION subscribers
+# it.telecomitalia.linemanager  # kept on for TIMVISION subscribers
+# it.telecomitalia.accountmanager              # TIM account, Firebase messaging; kept on for TIMVISION subscribers
+# it.telecomitalia.timppapp  # kept on for TIMVISION subscribers
+# timvision.tvappsettings  # kept on for TIMVISION subscribers
 
 # TIM smart home
 it.telecomitalia.iotcontroller

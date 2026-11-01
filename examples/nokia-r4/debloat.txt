@@ -4,9 +4,9 @@
 #
 # Apply:   launcher/build-and-install.sh first (this list disables the stock launcher), then
 #          TV_HOST=<tv ip> tools/disable.sh examples/nokia-r4/debloat.txt
-#          The tuner, USB-player and screen-cast entries hold TV_INPUT_HARDWARE, so tools/disable.sh
-#          refuses them until TV_INPUT reaches them: set TVINPUT_ALLOW=1 for the run, or comment
-#          them out if you keep the tuner or cast (owners who keep the tuner: the Live TV app is
+#          The tuner, USB-player and screen-cast entries are commented out (the owner had them off).
+#          They hold TV_INPUT_HARDWARE, so uncomment them only if you never use them, and that run
+#          needs TVINPUT_ALLOW=1 (owners who keep the tuner: the Live TV app is
 #          com.apps.livetv; point the launcher's live_tv_package at it in config.xml).
 # Undo:    TV_HOST=<tv ip> tools/restore.sh examples/nokia-r4/debloat.txt
 # Everything is DISABLED, not uninstalled. Comment out any line you want to keep.
@@ -50,8 +50,8 @@ com.vewd.core.service                           # Opera/vewd webapp runtime of t
 # Voice, cast and streaming the owner declined
 com.google.android.katniss                      # Assistant: the remote's mic button stops working
 com.google.android.apps.mediashell
-com.google.android.youtube.tv                   # replaced by SmartTube (owner's choice)
-com.apps.scast                                  # OEM screen cast; TV input, needs TVINPUT_ALLOW=1
+# com.google.android.youtube.tv                   # replaced by SmartTube (owner's choice); off on the owner's set, kept on in the shared list
+# com.apps.scast                                  # OEM screen cast; TV input, needs TVINPUT_ALLOW=1; off on the owner's set, kept on in the shared list
 
 # Streaming apps the owner does not use
 in.startv.hotstar
@@ -63,12 +63,12 @@ com.spotify.tv.android
 com.amazon.amazonvideo.livingroom
 
 # Tuner / broadcast / USB media, owner declined (TVINPUT_ALLOW=1)
-com.apps.livetv
-com.apps.dtv
-com.apps.atv
-com.apps.atsc                                   # foreign-standard tuner, unused here
-com.apps.isdb                                   # foreign-standard tuner, unused here
-com.apps.usbmediaplayer
+# com.apps.livetv  # off on the owner's set, kept on in the shared list
+# com.apps.dtv  # off on the owner's set, kept on in the shared list
+# com.apps.atv  # off on the owner's set, kept on in the shared list
+# com.apps.atsc                                   # foreign-standard tuner, unused here; off on the owner's set, kept on in the shared list
+# com.apps.isdb                                   # foreign-standard tuner, unused here; off on the owner's set, kept on in the shared list
+# com.apps.usbmediaplayer  # off on the owner's set, kept on in the shared list
 
 # Junk overlays and factory tools (never launched during discovery)
 com.apps.networkspeed

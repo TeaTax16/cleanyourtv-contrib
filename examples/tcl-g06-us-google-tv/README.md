@@ -6,7 +6,7 @@ Google TV's home kept behind it for the remote's app buttons. Tested on 31 Octob
 
 | File | What it is |
 |---|---|
-| `debloat.txt` | The 22 packages that were disabled, grouped and commented, with what to keep and why |
+| `debloat.txt` | The 21 packages the list disables (Netflix, off on this set, is commented out), grouped and commented, with what to keep and why |
 | `config.json` | Dock order, the hidden Live TV tile and the launcherx redirect; push it with `tools/theme.sh` |
 
 All commands run from the repo root, with the TV's IP in `TV_HOST`.
@@ -50,7 +50,7 @@ launcherx for a moment before the new launcher. The small TV (guide) button offe
 should do; the owner set it to Plex there.
 
 Still dead: the bookmark button (Google TV's watchlist, answered only on launcherx's own home screen) and
-the buttons whose apps the list disables: Netflix, TCL Channel and the dashboard button. Mapping them with
+the buttons whose apps were disabled on this set: Netflix, TCL Channel and the dashboard button. Mapping them with
 `app_keys` needs `key_filter` on, which costs the held-key volume ramp on TCL sets like
 [the G09](../../docs/devices/tcl-55p71b-g09-key-repeat.md); the owner kept the ramp.
 
