@@ -23,7 +23,7 @@ of these projects ask for far more than the reference launcher does:
 
 **Jump to:** [Home screens built as their own app](#home-screens-built-as-their-own-app) · [Forks of the launcher](#forks-of-the-launcher) · [Screensavers and add-ons](#screensavers-and-add-ons) · [Tools and companion apps](#tools-and-companion-apps) · [Other platforms: Fire TV and LG webOS](#other-platforms-fire-tv-and-lg-webos) · [Add-ons in this repo](addons/README.md) · [Guides and write-ups](#guides-and-write-ups) · [Find a project by TV brand](#find-a-project-by-tv-brand) · [Add yours](#add-yours)
 
-172 projects so far.
+173 projects so far.
 
 ## Home screens built as their own app
 
@@ -164,6 +164,7 @@ This repo's launcher with new looks or features, often tuned for one TV. Good pl
 | [Retro Launchers](https://github.com/maxhayim/cleanyourtv/blob/retro-launchers/RETRO_LAUNCHERS.md) ([Leanback screenshot](https://raw.githubusercontent.com/maxhayim/cleanyourtv/2765c3a69d6408701b00c54bc24ad4773cf0bb9e/themes/leanback-2014/screenshot.jpg), [Metro screenshot](https://raw.githubusercontent.com/maxhayim/cleanyourtv/2765c3a69d6408701b00c54bc24ad4773cf0bb9e/themes/retro-metro/screenshot.jpg)) | Two tributes to classic TV home screens as themes: the 2014 Leanback Launcher (a blue microphone search orb, the time at the top right, banner rows with headings, round settings buttons at the end) and a Retro Metro Launcher after Windows 8 and the Xbox 360 (a big "Start", square flat coloured tiles with the name inside). Nine off-by-default switches build them; no Google or Microsoft artwork | ASUS/MOKA M1G, Android TV 11 | [maxhayim](https://github.com/maxhayim) |
 | [Five home screens on a TCL 43S450G](https://github.com/iPior/cleanyourtv/tree/my-tv) ([screenshot](https://raw.githubusercontent.com/iPior/cleanyourtv/01aad964/docs/fork/feature-wide.jpg), [issues](https://github.com/iPior/cleanyourtv/issues)) | A Continue watching row and five themes picked on the TV with a Themes button: Feature, Minutes, Horizon, Centre Line and Lamp. Adds READ_TV_LISTINGS and INTERNET, for Netflix's posters from its image server only, and the APK is over this repo's size limit; no analytics | TCL 43S450G, Google TV 11 | [iPior](https://github.com/iPior) |
 | [Skyworth 75A8 API 23 port](https://github.com/rsy1203/cleanyourtv-skyworth-75a8) ([Home screenshot](https://github.com/user-attachments/assets/39a2f3f8-eb04-4f46-935e-965ffbdd048c), [Inputs screenshot](https://github.com/user-attachments/assets/daaba493-b73f-4e4f-a79f-aa81ab40d371)) | An Android 6.0 (API 23) port for Coocaa UI: input-source discovery, HDMI 3 switching and an opt-in Home-key filter (no window content); no `INTERNET` permission | Skyworth 75A8, Coocaa UI 9.0121117-211170, Android 6.0 (API 23) | [rsy1203](https://github.com/rsy1203) |
+| [Chromecast Home: Up next and Now playing controls](https://github.com/DKRC/cleanyourtv/blob/chromecast-home/FORK.md) ([issues](https://github.com/DKRC/cleanyourtv/issues)) | A fork with an Up next card read from iCalendar feeds (the next F1 weekend from race week's Monday, the next episode of each series from an Episodate watchlist), a Now playing card with previous, play/pause, next and open-app, weather from Open-Meteo with an airport METAR as "now", hold OK on a tile for Move, Remove, Uninstall and App info, and an opt-in accessibility service so Back on Spotify's home goes Home instead of asking to close it. Network: Open-Meteo, aviationweather.gov and the calendar URLs you set, only while Home is visible; a notification listener for media sessions | Chromecast with Google TV 4K (sabrina), Google TV 14 | [DKRC](https://github.com/DKRC) |
 
 ## Screensavers and add-ons
 
@@ -254,7 +255,7 @@ By the TV each project was built and tested on. Most of them run on other Androi
 - **BenQ:** [Navigation sounds](https://github.com/rocavence/tv-vibehack/tree/nav-sounds)
 - **Bettdow:** [Glass home with this week's trending series](https://github.com/viniciustheodoro/newdesignforyourTV)
 - **Changhong:** [Glance line and crimson glass on a Changhong](https://github.com/bayhaqy/cleanyourtv/blob/main/my-tv/README.md)
-- **Chromecast with Google TV:** [Cast Fix](https://github.com/thayford/castfix), [Chromecast glass fork](https://github.com/NewPlayer0213/cleanyourtv/blob/showcase/FORK.md), [Weather Clock](https://github.com/matyivagyok/weatherclock-tv)
+- **Chromecast with Google TV:** [Cast Fix](https://github.com/thayford/castfix), [Chromecast glass fork](https://github.com/NewPlayer0213/cleanyourtv/blob/showcase/FORK.md), [Chromecast Home: Up next and Now playing controls](https://github.com/DKRC/cleanyourtv/blob/chromecast-home/FORK.md), [Weather Clock](https://github.com/matyivagyok/weatherclock-tv)
 - **Formovie:** [CleanTV by VGS](https://github.com/vgscity/vgs-cleantv), [Homelab companion](https://github.com/epochcoder/cleanyourtv/tree/main/companion)
 - **FPT Play:** [TV Remote](https://github.com/HoangTran0410/tv-remote)
 - **Haier:** [cleanyourtv for Haier](https://github.com/abuhasanrumi/cleanyourtv/tree/showcase-haier-fork/docs/haier-matrixtv-de)
