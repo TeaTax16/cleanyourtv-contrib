@@ -5,7 +5,8 @@
 
 Exits 0 when the API answers; 1 when a port answered and it is not the JointSpace API (the package to
 check is named); and 2 when this run could not tell - nothing answered on either port, so the TV may be
-off, asleep, at another address or out of reach from here - or the command line was not one address.
+off, asleep, at another address or out of reach from here - or the command line was not one address: a
+URL, or an address carrying a port of its own, since the two ports this asks are the ones below.
 
 A port that refuses the connection is the TV answering: nothing listens there, which is what a disabled
 org.droidtv.xtv looks like. A port that times out, answers "No route to host", or a name that does not
@@ -30,6 +31,7 @@ answer: the endpoint is there.
 import errno
 import json
 import os
+import re
 import socket
 import ssl
 import sys
@@ -37,6 +39,16 @@ import urllib.error
 import urllib.request
 
 PORTS = ((1926, "https"), (1925, "http"))
+# An address as tools/tv.py takes one in TV_HOST (the TV's IP, or IP:port for an adbd on a port of its
+# own), and a URL pasted from a browser. Both reach find_api() as the host, and both then build a URL
+# that is not one: https://192.168.1.50:1926:1926/6/system is a name that does not resolve, so the run
+# answered "nothing answered on 1926 and 1925, the set may be off" - words about the TV's network for a
+# mistake in the address - and an owner whose TV_HOST is set that way (the form tools/tv.py documents)
+# went looking at the set instead of at the argument. The port in TV_HOST is the ADB port and means
+# nothing to JointSpace, which this finds on 1926 and 1925 by itself, so the address alone is what the
+# check takes.
+HOST_PORT = re.compile(r"^(?:\[[^\]]+\]|[^:\[\]]+):\d+$")
+URL_SCHEME = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*://")
 PROBE = ("ambilight/topology", "ambilight/power", "ambilight/mode", "ambilight/currentconfiguration",
          "powerstate")
 # errno values that mean this computer never reached the TV: a timeout, a network that is not the
@@ -114,11 +126,34 @@ def find_api(host):
     return None, None, reached
 
 
+def address_problem(host):
+    """Why `host` is not an address this check can probe, or None.
+
+    tv.py's TV_HOST takes IP:port, and that port is the ADB one; a JointSpace API is on 1926 (Android
+    TV) or 1925 (older sets), which find_api() tries itself. A URL is the other copy-paste shape.
+    """
+    if URL_SCHEME.match(host):
+        return (f"{host} is a URL, not the TV's address: this check asks the address itself on "
+                f"{PORTS[0][0]} and {PORTS[1][0]}, so pass it alone, without http:// or https://.")
+    port = HOST_PORT.match(host)
+    if port:
+        address = host.rsplit(":", 1)[0]
+        return (f"{host} carries a port, and this check asks the address itself on {PORTS[0][0]} and "
+                f"{PORTS[1][0]}, so pass the TV's address alone: {address}.\n"
+                f"TV_HOST is where that form comes from - tools/tv.py takes IP:port for its ADB "
+                f"connection, and that port is the ADB port, not a JointSpace one.")
+    return None
+
+
 def main(argv):
     args = argv[1:]
     host = args[0] if args else os.environ.get("TV_HOST", "")
     if len(args) > 1 or not host or host.startswith("-"):
         print(__doc__.split("\n\n")[1], file=sys.stderr)
+        return 2
+    problem = address_problem(host)
+    if problem:
+        print(problem, file=sys.stderr)
         return 2
 
     base, info, reached = find_api(host)

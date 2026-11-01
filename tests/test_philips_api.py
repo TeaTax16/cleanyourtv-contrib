@@ -14,6 +14,11 @@ was simply asleep went looking for a package nothing had touched. That shape exi
 nothing was learned; it is the rule tools/adb-closed.py and docs/TROUBLESHOOTING.md keep for port 5555 -
 only a refused connection is the TV speaking.
 
+An address is the TV's own, not a TV_HOST written IP:port or a URL pasted from a browser: the two ports
+below are added here, so `192.168.1.50:1926` built `https://192.168.1.50:1926:1926/6/system`, a name that
+does not resolve, and the run answered "nothing answered, the set may be off" over an argument it could
+not use. Both shapes are named before a URL is asked, with the address alone to pass.
+
 Run from the repository root: python3 -m unittest discover -s tests -v
 """
 import contextlib
@@ -162,6 +167,63 @@ class ASilentTVIsNotADisabledPackage(unittest.TestCase):
         code, out, _, _ = run(answers)
         self.assertEqual(code, 1)
         self.assertIn("org.droidtv.xtv", out)
+
+
+class AnAddressThisCannotProbe(unittest.TestCase):
+    """A TV_HOST written as tools/tv.py takes it (IP:port), and a URL pasted from a browser.
+
+    Both reach find_api() as the host, and both build a URL that is not one - the address and a port of
+    its own before the 1926 this adds - so the run answered "nothing answered on 1926 and 1925, the set
+    may be off" for an argument it could not use, and an owner whose TV_HOST carries the ADB port went
+    looking at the TV. Neither shape asks a URL now: the address alone is what the check takes.
+    """
+
+    def test_a_tv_host_with_a_port_is_named_before_a_url_is_asked(self):
+        with mock.patch.dict("os.environ", {"TV_HOST": "192.168.1.50:1926"}):
+            code, out, asked, err = run({}, argv=("philips-api.py",))
+        self.assertEqual(code, 2)
+        self.assertEqual(asked, [], "a URL built from IP:port was asked: %s" % asked)
+        self.assertEqual(out, "")
+        self.assertIn("192.168.1.50:1926 carries a port", err)
+        self.assertIn("pass the TV's address alone: 192.168.1.50.", err)
+        self.assertIn("TV_HOST", err)
+        self.assertNotIn("nothing answered", err)
+        self.assertNotIn("off, asleep", err)
+
+    def test_an_address_with_a_port_on_the_command_line_is_the_same_mistake(self):
+        code, out, asked, err = run({}, argv=("philips-api.py", "192.168.1.50:5555"))
+        self.assertEqual(code, 2)
+        self.assertEqual(asked, [])
+        self.assertEqual(out, "")
+        self.assertIn("192.168.1.50:5555 carries a port", err)
+        self.assertIn("pass the TV's address alone: 192.168.1.50.", err)
+
+    def test_a_url_is_named_too(self):
+        for url in ("http://192.168.1.50", "https://tv.local"):
+            with self.subTest(url=url):
+                code, _, asked, err = run({}, argv=("philips-api.py", url))
+                self.assertEqual(code, 2)
+                self.assertEqual(asked, [])
+                self.assertIn(f"{url} is a URL, not the TV's address", err)
+                self.assertIn("without http:// or https://", err)
+
+    def test_an_address_with_colons_that_is_not_a_port_is_still_probed(self):
+        # A bracketed IPv6 address has colons and no port: the guard must leave it to find_api().
+        code, _, asked, _ = run({}, argv=("philips-api.py", "[fe80::1]"))
+        self.assertEqual(code, 2)
+        self.assertEqual(["https://[fe80::1]:1926/6/system", "http://[fe80::1]:1925/6/system"], asked)
+
+    def test_the_guard_reads_only_a_port_after_the_address(self):
+        for host in ("192.168.1.50", "192.168.1.50.", "tv.local", "fe80::1", "[fe80::1]",
+                     "tv-1.local"):
+            with self.subTest(host=host):
+                self.assertIsNone(philips_api.address_problem(host))
+        for host in ("192.168.1.50:1926", "tv.local:5555", "[fe80::1]:1926"):
+            with self.subTest(host=host):
+                self.assertIn("carries a port", philips_api.address_problem(host))
+        for host in ("http://192.168.1.50", "https://tv.local", "HTTP://192.168.1.50"):
+            with self.subTest(host=host):
+                self.assertIn("is a URL", philips_api.address_problem(host))
 
 
 class Answered(unittest.TestCase):
